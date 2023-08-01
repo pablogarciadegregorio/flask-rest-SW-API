@@ -262,7 +262,7 @@ def del_favorite(user_id):
 @app.route('/users/<int:user_id>', methods=['PUT', 'GET'])
 def get_single_user(user_id):
 
-    body = request.get_json(force=True) #{ 'username': 'new_username'}
+    body = request.get_json(force=True) 
     if request.method == 'PUT':
         user1 = User.query.get(user_id)
         user1.email = body["email"]
