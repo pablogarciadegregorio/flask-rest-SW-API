@@ -92,8 +92,8 @@ class Favorite(db.Model):
   
     id = db.Column(Integer, primary_key=True)
     user_id = db.Column(String(250))
-    fav_planet = db.Column(String(250))
-    fav_people = db.Column(String(250), nullable=False)
+    planet_id = db.Column(String(250))
+    people_id = db.Column(String(250), nullable=False)
     
    
     

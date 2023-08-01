@@ -192,7 +192,7 @@ def create_planet():
     db.session.commit()
 
     response_body = {
-        "msg": "user created ",  
+        "msg": "planet created ",  
         
     }
 
@@ -208,7 +208,7 @@ def create_person():
     db.session.commit()
 
     response_body = {
-        "msg": "user created ",  
+        "msg": "person created ",  
         
     }
 
@@ -224,13 +224,55 @@ def create_favorite():
     db.session.commit()
 
     response_body = {
-        "msg": "user created ",  
+        "msg": "favorite created ",  
         
     }
 
     return jsonify(response_body), 200
 
 
+#### DELETE ####
+
+@app.route('/users/<int:user_id>/favoritos/', methods=['DELETE'])
+def del_favorite(user_id):
+
+    body = request.get_json(force=True)
+    
+    if body["characters_id"] is None:
+        favorito_query= Favorite.query.filter_by(user_id=user_id).filter_by(planet_id=body["planet_id"]).first()
+    
+    else:
+        favorito_query= Favorite.query.filter_by(user_id=user_id).filter_by(people_id=body["people_id"]).first()
+   
+
+    db.session.delete(favorito_query)
+    db.session.commit()
+
+
+    response_body = {
+        'msg':'ok',
+        "results": 'Favorite deleted'
+    }
+
+    return jsonify(response_body), 200
+
+
+##### PUT  ####
+
+@app.route('/users/<int:user_id>', methods=['PUT', 'GET'])
+def get_single_user(user_id):
+
+    body = request.get_json(force=True) #{ 'username': 'new_username'}
+    if request.method == 'PUT':
+        user1 = User.query.get(user_id)
+        user1.email = body["email"]
+        db.session.commit()
+        return jsonify(user1.serialize()), 200
+    if request.method == 'GET':
+        user1 = User.query.get(user_id)
+        return jsonify(user1.serialize()), 200
+
+    return "Invalid Method", 404
 
 
 # ------- FIN ENDPOINTS -----------------#
